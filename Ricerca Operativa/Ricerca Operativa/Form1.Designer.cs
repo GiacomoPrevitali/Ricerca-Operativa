@@ -98,10 +98,10 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Tabella.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Tabella.Location = new System.Drawing.Point(49, 87);
+            this.Tabella.Location = new System.Drawing.Point(50, 183);
             this.Tabella.Name = "Tabella";
             this.Tabella.RowHeadersVisible = false;
-            this.Tabella.Size = new System.Drawing.Size(829, 331);
+            this.Tabella.Size = new System.Drawing.Size(841, 352);
             this.Tabella.TabIndex = 3;
             this.Tabella.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.Tabella_EditingControlShowing);
             // 

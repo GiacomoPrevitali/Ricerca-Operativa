@@ -21,6 +21,7 @@ namespace Ricerca_Operativa
         bool primo=false;
         int costo = 0;
         int pezzi = 0;
+        bool full = false;
         Form2 f = new Form2();
 
         public Form1()
@@ -42,6 +43,9 @@ namespace Ricerca_Operativa
         }
         private void creaTabella()
         {
+            //FINIRE CONTROLLI
+            //VEDERE SE FUNZIONA LA LISTBOX VUOTA
+
             //Inserire controllo sul numero, se si scrive <2 cancellare e risrivere 2
             //ADATTARE LA TABLE GRID AL NUMERO DI COLONNE E ALLA DIMENSIONE DELLA FORM
             //RICORDARE RIMETTERE LE TXT NEI FOR!!-
@@ -97,31 +101,35 @@ namespace Ricerca_Operativa
        public void pieno()
         {
             int c = 0;
-            for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
+            if (ok)
             {
-                for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
                 {
-                    //problema
-                    if (Convert.ToString(Tabella[i, j].Value) == "")
+                    for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
                     {
-                       // ok = false;
-                        c++;
+                        //problema
+                        if (Convert.ToString(Tabella[i, j].Value) == "")
+                        {
+                            // ok = false;
+                            c++;
 
 
+                        }
                     }
                 }
-            }
-            if (c == 0)
-            {
-                ok = true;
-            }
-            else
-            {
-                ok = false;
-            }
-            if(ok== false)
-            {
-                MessageBox.Show("Nella tabella sono presenti uno o più campi privi di valore", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (c == 0)
+                {
+                    ok = true;
+                    full= true;
+                }
+                else
+                {
+                    ok = false;
+                }
+                if (ok == false)
+                {
+                    MessageBox.Show("Nella tabella sono presenti uno o più campi privi di valore", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
        public void somme()
@@ -172,39 +180,68 @@ namespace Ricerca_Operativa
                 {
                     pezzi = Convert.ToInt32(Tabella[1, righe].Value);
                     costo = costo + Convert.ToInt32(Tabella[1, 0].Value) * Convert.ToInt32(Tabella[1, righe].Value);
+                    f.carica(costo, pezzi, Convert.ToInt32(Tabella[1, 0].Value));
                     Tabella.Columns.Remove(Tabella.Columns[1]);
                     colonne--;
                     Tabella[colonne, 0].Value = Convert.ToInt32(Tabella[colonne, 0].Value) - pezzi;
                     Tabella[colonne, righe].Value = Convert.ToInt32(Tabella[colonne, righe].Value) - pezzi;
-                    f.carica(costo, pezzi, Convert.ToInt32(Tabella[1, 0].Value));
+                   
                 }
                 else
                 {
                     pezzi = Convert.ToInt32(Tabella[colonne, 0].Value);
                     costo = costo + Convert.ToInt32(Tabella[1, 0].Value) * Convert.ToInt32(Tabella[colonne, 0].Value);
+                    f.carica(costo, pezzi, Convert.ToInt32(Tabella[1, 0].Value));
                     Tabella.Rows.Remove(Tabella.Rows[0]);
                     righe--;
                     Tabella[1, righe].Value = Convert.ToInt32(Tabella[1, righe].Value) - pezzi;
                     Tabella[colonne, righe].Value = Convert.ToInt32(Tabella[colonne, righe].Value) - pezzi;
-                    f.carica(costo, pezzi, Convert.ToInt32(Tabella[1, 0].Value));
+                    
                 }
                 // f.costi = costo;
                 // MessageBox.Show(Convert.ToString(costo));
                 Application.DoEvents();
                 Thread.Sleep(500);
             }
+            f.carica(-1, -1, costo);
+        }
+        public void Max()
+        {
+            MessageBox.Show("gg");
+            int h = 0;
+            if (full)  
+            {
+                MessageBox.Show("gfgdfg");
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
+                {
+                    for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
+                    {
+                        //FARE TEST RIEMPI
+                        h = Convert.ToInt32(Tabella[i, j].Value);
+                        if (h > 10000)
+                        {
+                            ok = false;
+                        }
+                    }
+                }
+                if (!ok)
+                {
+                    MessageBox.Show("Nella tabella è presente un valore troppo alto", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
         }
         private void btn_AVVIA_Click(object sender, EventArgs e)
         {
-            f.Show();
-            int r, c;
-            
-            r = (Convert.ToInt32(nUD_Righe.Text) + 1);
-            c = (Convert.ToInt32(nUD_Colonne.Text) + 2);
-            int[,] t = new int[c, r];
-            if (crea)
-            {
-              
+           
+                int r, c;
+
+                r = (Convert.ToInt32(nUD_Righe.Text) + 1);
+                c = (Convert.ToInt32(nUD_Colonne.Text) + 2);
+                int[,] t = new int[c, r];
+                if (crea)
+                {
+
                 //ok = true;
                 //FARE TEST SU CONTROLLO DATI MINIMI COSTI
                 //Mettere controllo numero minore da messaggio errore 26/10
@@ -219,51 +256,53 @@ namespace Ricerca_Operativa
                         if (Convert.ToString(Tabella[i, j].Value) == "")
                         {
                             ok = false;
- 
+
                         }  
                     }
                 }*/
-                pieno();
+                   
+                    pieno();
+                Max();
                 somme();
 
 
-                if (ok == true)
-                {
-                    Tabella.ReadOnly = true;
-                    for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
+                    if (ok == true)
                     {
-                        for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
+                    f.carica(-3, -3, -3);
+                        Tabella.ReadOnly = true;
+                        for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
                         {
-                            //FARE TEST RIEMPI
-                            t[i, j] = Convert.ToInt32(Tabella[i, j].Value);
+                            for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
+                            {
+                                //FARE TEST RIEMPI
+                                t[i, j] = Convert.ToInt32(Tabella[i, j].Value);
+                            }
                         }
-                    }
-                   
-                    int colonne = Convert.ToInt32(nUD_Colonne.Text) + 1;
-                    int righe = Convert.ToInt32(nUD_Righe.Text);
-                    
-                    
-                    NordOvest(colonne, righe);
-                    //FARE CONTROLLO SU CASELLE TUTTE PIENE
-                    f.Show();
-                    creaTabella();
-                    ricrea(t);
-                    MessageBox.Show("minimi in futuro");
-                    minimo();
 
-                    creaTabella();
-                    ricrea(t);
+                        int colonne = Convert.ToInt32(nUD_Colonne.Text) + 1;
+                        int righe = Convert.ToInt32(nUD_Righe.Text);
+
+                        f.Show();
+                        NordOvest(colonne, righe);
+                        //FARE CONTROLLO SU CASELLE TUTTE PIENE
+
+                        creaTabella();
+                        ricrea(t);
+                        minimo();
+
+                        creaTabella();
+                        ricrea(t);
+                    }
                 }
-            }
-            else
-            {
-                MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            Tabella.ReadOnly = false;
-           
+                else
+                {
+                    MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                Tabella.ReadOnly = false;
         }
         private void riempi()
         {
+            
             //fare controllo massimo maggiore minimo
             int somma=0;
             int random = 0;
@@ -324,10 +363,10 @@ namespace Ricerca_Operativa
                 }
             
             Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text)-1].Value = somma-calcolo;
-
+            
             //creaTabella();
-           /*
-             Tabella[1,0].Value = 10;
+           
+            /* Tabella[1,0].Value = 10;
              Tabella[1,1].Value = 15;
              Tabella[1,2].Value = 20;
              Tabella[1,3].Value = 100;
@@ -355,8 +394,8 @@ namespace Ricerca_Operativa
              Tabella[6, 0].Value = 200;
              Tabella[6, 1].Value = 150;
              Tabella[6, 2].Value = 160;
-             Tabella[6, 3].Value = 510;*/
-
+             Tabella[6, 3].Value = 510;
+            */
         }
        
         private void btn_Test_Click(object sender, EventArgs e)
@@ -464,6 +503,7 @@ namespace Ricerca_Operativa
                 {
                     pezzi = Convert.ToInt32(Tabella[x, righe].Value);
                     costo = costo + Convert.ToInt32(Tabella[x, y].Value) * Convert.ToInt32(Tabella[x, righe].Value);
+                    f.carica(costo, pezzi, Convert.ToInt32(Tabella[x, y].Value));
                     Tabella.Columns.Remove(Tabella.Columns[x]);
                     colonne--;
                     Tabella[colonne, y].Value = Convert.ToInt32(Tabella[colonne, y].Value) - pezzi;
@@ -473,17 +513,16 @@ namespace Ricerca_Operativa
                 {
                     pezzi = Convert.ToInt32(Tabella[colonne, y].Value);
                     costo = costo + Convert.ToInt32(Tabella[x, y].Value) * Convert.ToInt32(Tabella[colonne, y].Value);
+                    f.carica(costo, pezzi, Convert.ToInt32(Tabella[x, y].Value));
                     Tabella.Rows.Remove(Tabella.Rows[y]);
                     righe--;
                     Tabella[x, righe].Value = Convert.ToInt32(Tabella[x, righe].Value) - pezzi;
                     Tabella[colonne, righe].Value = Convert.ToInt32(Tabella[colonne, righe].Value) - pezzi;
                 }
-
                 Application.DoEvents();
                 Thread.Sleep(500);
             }
-
-
+            f.carica(-2, -2, costo);
         }
         private void Tabella_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {

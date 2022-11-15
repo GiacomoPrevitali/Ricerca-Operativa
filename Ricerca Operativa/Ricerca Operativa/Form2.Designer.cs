@@ -35,15 +35,15 @@
             // lsB_Costi
             // 
             this.lsB_Costi.FormattingEnabled = true;
-            this.lsB_Costi.Location = new System.Drawing.Point(45, 29);
+            this.lsB_Costi.Location = new System.Drawing.Point(12, 16);
             this.lsB_Costi.Name = "lsB_Costi";
-            this.lsB_Costi.Size = new System.Drawing.Size(375, 342);
+            this.lsB_Costi.Size = new System.Drawing.Size(406, 420);
             this.lsB_Costi.TabIndex = 0;
             this.lsB_Costi.SelectedIndexChanged += new System.EventHandler(this.lsB_Costi_SelectedIndexChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(611, 91);
+            this.button1.Location = new System.Drawing.Point(460, 170);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 1;
@@ -55,11 +55,12 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(561, 450);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.lsB_Costi);
             this.Name = "Form2";
             this.Text = "Form2";
+            this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
 
         }

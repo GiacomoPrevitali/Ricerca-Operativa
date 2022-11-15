@@ -20,18 +20,43 @@ namespace Ricerca_Operativa
 
         private void lsB_Costi_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
+            //togliere la x in alto a sx e mettere bottone chiudi
         }
+        int tot = 0;
         public void carica(int costo, int pezzi, int CostoU)
         {
-            //FINIRE E AGGIUNGERE MINIMI COSTI
-            int c = pezzi * CostoU;
-            lsB_Costi.Items.Add(pezzi+"*"+costo+"="+CostoU);
+            if (costo == -3)
+            {
+                lsB_Costi.Items.Clear();
+            }else if (costo == -1)
+            {
+                lsB_Costi.Items.Add("Totale: "+CostoU);
+                lsB_Costi.Items.Add(" ");
+                lsB_Costi.Items.Add("MINIMI COSTI");
+            }
+            else if(costo == -2)
+            {
+                lsB_Costi.Items.Add("Totale: " + CostoU);
+            }else
+            {
+                int c = pezzi * CostoU;
+                tot = tot + c;
+                lsB_Costi.Items.Add(pezzi + " X " + CostoU + "" + " = " + c);
+            }
+           
+        }
+
+
+
+        private void Form2_Load(object sender, EventArgs e)
+        {
+            lsB_Costi.Items.Add("NORD OVEST");
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
 
+            this.Close();
         }
     }
 }
