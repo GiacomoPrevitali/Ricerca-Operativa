@@ -15,12 +15,10 @@ namespace Ricerca_Operativa
         public Form2()
         {
             InitializeComponent();
-            //costi = c;
         }
 
         private void lsB_Costi_SelectedIndexChanged(object sender, EventArgs e)
         {
-            //togliere la x in alto a sx e mettere bottone chiudi
         }
         int tot = 0;
         public void carica(int costo, int pezzi, int CostoU)
@@ -51,6 +49,7 @@ namespace Ricerca_Operativa
         private void Form2_Load(object sender, EventArgs e)
         {
             lsB_Costi.Items.Add("NORD OVEST");
+            this.ControlBox = false;
         }
 
         private void button1_Click(object sender, EventArgs e)

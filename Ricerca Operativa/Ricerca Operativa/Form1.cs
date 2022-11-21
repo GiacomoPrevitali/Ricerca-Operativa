@@ -14,7 +14,6 @@ namespace Ricerca_Operativa
     public partial class Form1 : Form
     {
         DataTable table;
-        //bool first = false;
         bool ok = true;
         int nColonne=0;
         bool crea = false;
@@ -74,7 +73,6 @@ namespace Ricerca_Operativa
             {
                 t.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            //first = true;
             nColonne = table.Columns.Count;
         }
 
@@ -97,23 +95,19 @@ namespace Ricerca_Operativa
             }
             primo = true;
         }
+        //FARE TEST-------------------------------------------------------
         //Cambiare-----------------------------
        public void pieno()
         {
             int c = 0;
-            if (ok)
-            {
+           
                 for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
                 {
                     for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
                     {
-                        //problema
                         if (Convert.ToString(Tabella[i, j].Value) == "")
                         {
-                            // ok = false;
                             c++;
-
-
                         }
                     }
                 }
@@ -125,14 +119,14 @@ namespace Ricerca_Operativa
                 else
                 {
                     ok = false;
+                    full = false;
                 }
                 if (ok == false)
                 {
                     MessageBox.Show("Nella tabella sono presenti uno o più campi privi di valore", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-            }
         }
-       public void somme()
+        public void somme()
         {
             int sommaR = 0;
             int sommaC = 0;
@@ -207,18 +201,18 @@ namespace Ricerca_Operativa
         }
         public void Max()
         {
-            MessageBox.Show("gg");
             int h = 0;
             if (full)  
             {
-                MessageBox.Show("gfgdfg");
                 for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
                 {
                     for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
                     {
-                        //FARE TEST RIEMPI
-                        h = Convert.ToInt32(Tabella[i, j].Value);
-                        if (h > 10000)
+                        try
+                        {
+                            h = Convert.ToInt32(Tabella[i, j].Value);
+                        }
+                        catch
                         {
                             ok = false;
                         }
@@ -248,20 +242,8 @@ namespace Ricerca_Operativa
                 //FARE CONTROLLO RIEMPIMENTO TUTTE LE CELLE!!!
                 //modificare controllo Tutte le celle anche totali
                 //VEDERE ERRORE SU RIGHE E COLONNE VUOTE!!!!
-                /*for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
-                {
-                    for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
-                    {
-                //problema
-                        if (Convert.ToString(Tabella[i, j].Value) == "")
-                        {
-                            ok = false;
-
-                        }  
-                    }
-                }*/
                    
-                    pieno();
+                pieno();
                 Max();
                 somme();
 
@@ -274,7 +256,6 @@ namespace Ricerca_Operativa
                         {
                             for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
                             {
-                                //FARE TEST RIEMPI
                                 t[i, j] = Convert.ToInt32(Tabella[i, j].Value);
                             }
                         }
@@ -284,7 +265,6 @@ namespace Ricerca_Operativa
 
                         f.Show();
                         NordOvest(colonne, righe);
-                        //FARE CONTROLLO SU CASELLE TUTTE PIENE
 
                         creaTabella();
                         ricrea(t);
@@ -302,100 +282,111 @@ namespace Ricerca_Operativa
         }
         private void riempi()
         {
-            
-            //fare controllo massimo maggiore minimo
             int somma=0;
             int random = 0;
+            bool big=false;
             Random r = new Random();
-             for(int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
-             {
-                 for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
-                 {
-                  //FARE TEST RIEMPI
-                     Tabella[i, j].Value = Convert.ToInt32(r.Next(Convert.ToInt32(nUP_Min.Text), Convert.ToInt32(nUP_max.Text)));
-                 }
-             }
-
-           
-           for(int i=1; i<= Convert.ToInt32(nUD_Colonne.Text); i++)
+            if (Convert.ToInt32(nUP_max.Text) >=Convert.ToInt32( nUP_Min.Text))
             {
-                //Controllo sulla creazione della tabella quando si riempiono gli spazi
-                random= Convert.ToInt32(r.Next(50,200));
-              //  MessageBox.Show(Convert.ToString(random));
-                Tabella[i, Convert.ToInt32(nUD_Righe.Text)].Value = random;
-                somma = somma + random;
+                big=true;
             }
-            Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text)].Value = somma;
-            int calcolo = 0;
-            int media = 0;
-            int diff = 0;
-            bool controllo = true;
-            if (Convert.ToInt32(nUD_Righe.Text) > 1)
+            else
             {
-                media= somma / (Convert.ToInt32(nUD_Righe.Text) - 1);
+                big=false;
+                primo = true;
+                MessageBox.Show("Intervallo dei costi non corretto", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
             }
-            if (media < 10)
+            if (big)
             {
-                media = 11;
-              
-            }
-                   //RIVEDEREEEEEE
-
-            for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text) - 1; j++)
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
                 {
-                
-                
-                    random = Convert.ToInt32(r.Next(media-((media/10)*5), (media+diff)));
+                    for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
+                    {
+                        //FARE TEST RIEMPI
+                        Tabella[i, j].Value = Convert.ToInt32(r.Next(Convert.ToInt32(nUP_Min.Text), Convert.ToInt32(nUP_max.Text)));
+                    }
+                }
+
+
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
+                {
+                    //Controllo sulla creazione della tabella quando si riempiono gli spazi
+                    random = Convert.ToInt32(r.Next(50, 200));
+                    Tabella[i, Convert.ToInt32(nUD_Righe.Text)].Value = random;
+                    somma = somma + random;
+                }
+                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text)].Value = somma;
+                int calcolo = 0;
+                int media = 0;
+                int diff = 0;
+                bool controllo = true;
+                if (Convert.ToInt32(nUD_Righe.Text) > 1)
+                {
+                    media = somma / (Convert.ToInt32(nUD_Righe.Text) - 1);
+
+                }
+                if (media < 10)
+                {
+                    media = 11;
+
+                }
+
+                for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text) - 1; j++)
+                {
+
+
+                    random = Convert.ToInt32(r.Next(media - ((media / 10) * 5), (media + diff)));
                     ;
-                if (controllo == true)
-                {
-                    diff = media - random;
-                }
-                else
-                {
-                    diff = 0;
-                }
-                controllo = !controllo;
-                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, j].Value = random;
+                    if (controllo == true)
+                    {
+                        diff = media - random;
+                    }
+                    else
+                    {
+                        diff = 0;
+                    }
+                    controllo = !controllo;
+                    Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, j].Value = random;
                     calcolo = calcolo + random;
-                    
+
                 }
-            
-            Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text)-1].Value = somma-calcolo;
-            
-            //creaTabella();
-           
-            /* Tabella[1,0].Value = 10;
-             Tabella[1,1].Value = 15;
-             Tabella[1,2].Value = 20;
-             Tabella[1,3].Value = 100;
 
-             Tabella[2, 0].Value = 12;
-             Tabella[2, 1].Value = 30;
-             Tabella[2, 2].Value = 35;
-             Tabella[2, 3].Value = 120;
+                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text) - 1].Value = somma - calcolo;
 
-             Tabella[3, 0].Value = 80;
-             Tabella[3, 1].Value = 40;
-             Tabella[3, 2].Value = 30;
-             Tabella[3, 3].Value = 90;
+                //creaTabella();
 
-             Tabella[4, 0].Value = 30;
-             Tabella[4, 1].Value = 45;
-             Tabella[4, 2].Value = 20;
-             Tabella[4, 3].Value = 50;
+                /* Tabella[1,0].Value = 10;
+                 Tabella[1,1].Value = 15;
+                 Tabella[1,2].Value = 20;
+                 Tabella[1,3].Value = 100;
 
-             Tabella[5, 0].Value = 50;
-             Tabella[5, 1].Value = 60;
-             Tabella[5, 2].Value = 50;
-             Tabella[5, 3].Value = 150;
+                 Tabella[2, 0].Value = 12;
+                 Tabella[2, 1].Value = 30;
+                 Tabella[2, 2].Value = 35;
+                 Tabella[2, 3].Value = 120;
 
-             Tabella[6, 0].Value = 200;
-             Tabella[6, 1].Value = 150;
-             Tabella[6, 2].Value = 160;
-             Tabella[6, 3].Value = 510;
-            */
+                 Tabella[3, 0].Value = 80;
+                 Tabella[3, 1].Value = 40;
+                 Tabella[3, 2].Value = 30;
+                 Tabella[3, 3].Value = 90;
+
+                 Tabella[4, 0].Value = 30;
+                 Tabella[4, 1].Value = 45;
+                 Tabella[4, 2].Value = 20;
+                 Tabella[4, 3].Value = 50;
+
+                 Tabella[5, 0].Value = 50;
+                 Tabella[5, 1].Value = 60;
+                 Tabella[5, 2].Value = 50;
+                 Tabella[5, 3].Value = 150;
+
+                 Tabella[6, 0].Value = 200;
+                 Tabella[6, 1].Value = 150;
+                 Tabella[6, 2].Value = 160;
+                 Tabella[6, 3].Value = 510;
+                */
+            }
         }
        
         private void btn_Test_Click(object sender, EventArgs e)
@@ -437,9 +428,7 @@ namespace Ricerca_Operativa
             {
                 for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
                 {
-                    //FARE TEST RIEMPI
                     Tabella[i, j].Value = t[i, j];
-                    //MessageBox.Show(Convert.ToString(t[i, j]));
                 }
             }
 
@@ -451,11 +440,9 @@ namespace Ricerca_Operativa
             int pezzi = 0;
             int colonne = Convert.ToInt32(nUD_Colonne.Text) + 1;
             int righe = Convert.ToInt32(nUD_Righe.Text);
-            //FARE CONTROLLO SU CASELLE TUTTE PIENE
 
             while (righe != 0 && colonne != 0)
             {
-                //minimo();
                 int min = 100000000;
                 int x = 0;
                 int y = 0;
@@ -534,7 +521,6 @@ namespace Ricerca_Operativa
                 tb.KeyPress += new KeyPressEventHandler(dgw_matrice_KeyPress);
             }
         }
-
         private void dgw_matrice_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
@@ -542,11 +528,5 @@ namespace Ricerca_Operativa
                 e.Handled = true;
             }
         }
-
-
-
-
-        //CONTROLLARE COMMENTI PROGETTO A SCUOLA
-        //nUp check se entro toglere 0
     }
 }

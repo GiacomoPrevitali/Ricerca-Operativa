@@ -34,9 +34,9 @@
             this.Tabella = new System.Windows.Forms.DataGridView();
             this.btn_AVVIA = new System.Windows.Forms.Button();
             this.btn_Test = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.nUP_max = new System.Windows.Forms.NumericUpDown();
             this.nUP_Min = new System.Windows.Forms.NumericUpDown();
+            this.bottoni1 = new LAB_Festa_fine_anno.Properties.Bottoni();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_Righe)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nUD_Colonne)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.Tabella)).BeginInit();
@@ -98,7 +98,8 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.Tabella.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.Tabella.Location = new System.Drawing.Point(50, 183);
+            this.Tabella.GridColor = System.Drawing.Color.LightGray;
+            this.Tabella.Location = new System.Drawing.Point(62, 197);
             this.Tabella.Name = "Tabella";
             this.Tabella.RowHeadersVisible = false;
             this.Tabella.Size = new System.Drawing.Size(841, 352);
@@ -124,15 +125,6 @@
             this.btn_Test.Text = "RIEMPI";
             this.btn_Test.UseVisualStyleBackColor = true;
             this.btn_Test.Click += new System.EventHandler(this.btn_Test_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(552, 41);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Minimi Costi";
-            this.button1.UseVisualStyleBackColor = true;
             // 
             // nUP_max
             // 
@@ -178,14 +170,29 @@
             0,
             0});
             // 
+            // bottoni1
+            // 
+            this.bottoni1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(14)))), ((int)(((byte)(230)))), ((int)(((byte)(179)))));
+            this.bottoni1.FlatAppearance.BorderSize = 0;
+            this.bottoni1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.bottoni1.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.bottoni1.ForeColor = System.Drawing.Color.White;
+            this.bottoni1.Location = new System.Drawing.Point(363, 89);
+            this.bottoni1.Name = "bottoni1";
+            this.bottoni1.Size = new System.Drawing.Size(136, 33);
+            this.bottoni1.TabIndex = 9;
+            this.bottoni1.Text = "Crea Tabella";
+            this.bottoni1.UseVisualStyleBackColor = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(5)))), ((int)(((byte)(1)))), ((int)(((byte)(50)))));
             this.ClientSize = new System.Drawing.Size(945, 664);
+            this.Controls.Add(this.bottoni1);
             this.Controls.Add(this.nUP_Min);
             this.Controls.Add(this.nUP_max);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btn_Test);
             this.Controls.Add(this.btn_AVVIA);
             this.Controls.Add(this.Tabella);
@@ -212,9 +219,9 @@
         private System.Windows.Forms.DataGridView Tabella;
         private System.Windows.Forms.Button btn_AVVIA;
         private System.Windows.Forms.Button btn_Test;
-        private System.Windows.Forms.Button button1;
         private System.Windows.Forms.NumericUpDown nUP_max;
         private System.Windows.Forms.NumericUpDown nUP_Min;
+        private LAB_Festa_fine_anno.Properties.Bottoni bottoni1;
     }
 }
 
