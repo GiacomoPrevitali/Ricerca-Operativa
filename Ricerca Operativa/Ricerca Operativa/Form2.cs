@@ -26,15 +26,19 @@ namespace Ricerca_Operativa
             if (costo == -3)
             {
                 lsB_Costi.Items.Clear();
-            }else if (costo == -1)
+                CostoU = 0;
+            }
+            else if (costo == -1)
             {
-                lsB_Costi.Items.Add("Totale: "+CostoU);
+                lsB_Costi.Items.Add("Totale: "+tot);
+                tot = 0;
                 lsB_Costi.Items.Add(" ");
                 lsB_Costi.Items.Add("MINIMI COSTI");
             }
             else if(costo == -2)
             {
-                lsB_Costi.Items.Add("Totale: " + CostoU);
+                lsB_Costi.Items.Add("Totale: " + tot);
+                tot = 0;
             }else
             {
                 int c = pezzi * CostoU;
@@ -52,10 +56,10 @@ namespace Ricerca_Operativa
             this.ControlBox = false;
         }
 
-        private void button1_Click(object sender, EventArgs e)
-        {
 
-            this.Close();
+        private void Rj_Chiudi_Click(object sender, EventArgs e)
+        {
+            this.Hide();
         }
     }
 }

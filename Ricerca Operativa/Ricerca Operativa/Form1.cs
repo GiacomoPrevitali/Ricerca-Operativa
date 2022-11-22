@@ -34,22 +34,14 @@ namespace Ricerca_Operativa
             Tabella.AllowUserToAddRows = false;
             Tabella.AllowUserToOrderColumns = false;
             Tabella.AllowUserToResizeRows = false;
-            Tabella.AllowUserToResizeColumns = false;
-            //TOGLIERE USATO SOLO PER TEST
-            //creaTabella();
-            //riempi();
-          
+            Tabella.AllowUserToResizeColumns = false;  
         }
+
         private void creaTabella()
         {
-            //FINIRE CONTROLLI
-            //VEDERE SE FUNZIONA LA LISTBOX VUOTA
 
-            //Inserire controllo sul numero, se si scrive <2 cancellare e risrivere 2
             //ADATTARE LA TABLE GRID AL NUMERO DI COLONNE E ALLA DIMENSIONE DELLA FORM
-            //RICORDARE RIMETTERE LE TXT NEI FOR!!-
             //problema scrittura nelle righe datagrid view non risolto anche se lo pensi
-            //fare controllo su creazione nuov tabella e perdita vecchi dati
              table = new DataTable();
             Tabella.DataSource = table;
 
@@ -77,26 +69,10 @@ namespace Ricerca_Operativa
         }
 
 
-        private void Btn_CreaTabella_Click(object sender, EventArgs e)
-        {
-            if (crea == true)
-            {
-                DialogResult dialogResult = MessageBox.Show("Creando una nuova tabella i dati attuali verrano cancellati \n Vuoi continuare?", "Avvertimento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                if (dialogResult == DialogResult.Yes)
-                {
-                    creaTabella();
-                }
-            }
-            else
-            {
-                creaTabella();
-                crea = true;
-                
-            }
-            primo = true;
-        }
         //FARE TEST-------------------------------------------------------
-        //Cambiare-----------------------------
+
+
+
        public void pieno()
         {
             int c = 0;
@@ -165,6 +141,33 @@ namespace Ricerca_Operativa
             }
             
         }
+        public void Max()
+        {
+            int h = 0;
+            if (full)
+            {
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
+                {
+                    for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
+                    {
+                        try
+                        {
+                            h = Convert.ToInt32(Tabella[i, j].Value);
+                        }
+                        catch
+                        {
+                            ok = false;
+                        }
+                    }
+                }
+                if (!ok)
+                {
+                    MessageBox.Show("Nella tabella è presente un valore troppo alto", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+
+        }
+        //Algoritmi
         public void NordOvest(int colonne, int righe)
         {
            
@@ -192,246 +195,10 @@ namespace Ricerca_Operativa
                     Tabella[colonne, righe].Value = Convert.ToInt32(Tabella[colonne, righe].Value) - pezzi;
                     
                 }
-                // f.costi = costo;
-                // MessageBox.Show(Convert.ToString(costo));
                 Application.DoEvents();
                 Thread.Sleep(500);
             }
             f.carica(-1, -1, costo);
-        }
-        public void Max()
-        {
-            int h = 0;
-            if (full)  
-            {
-                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
-                {
-                    for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
-                    {
-                        try
-                        {
-                            h = Convert.ToInt32(Tabella[i, j].Value);
-                        }
-                        catch
-                        {
-                            ok = false;
-                        }
-                    }
-                }
-                if (!ok)
-                {
-                    MessageBox.Show("Nella tabella è presente un valore troppo alto", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-
-        }
-        private void btn_AVVIA_Click(object sender, EventArgs e)
-        {
-           
-                int r, c;
-
-                r = (Convert.ToInt32(nUD_Righe.Text) + 1);
-                c = (Convert.ToInt32(nUD_Colonne.Text) + 2);
-                int[,] t = new int[c, r];
-                if (crea)
-                {
-
-                //ok = true;
-                //FARE TEST SU CONTROLLO DATI MINIMI COSTI
-                //Mettere controllo numero minore da messaggio errore 26/10
-                //FARE CONTROLLO RIEMPIMENTO TUTTE LE CELLE!!!
-                //modificare controllo Tutte le celle anche totali
-                //VEDERE ERRORE SU RIGHE E COLONNE VUOTE!!!!
-                   
-                pieno();
-                Max();
-                somme();
-
-
-                    if (ok == true)
-                    {
-                    f.carica(-3, -3, -3);
-                        Tabella.ReadOnly = true;
-                        for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
-                        {
-                            for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
-                            {
-                                t[i, j] = Convert.ToInt32(Tabella[i, j].Value);
-                            }
-                        }
-
-                        int colonne = Convert.ToInt32(nUD_Colonne.Text) + 1;
-                        int righe = Convert.ToInt32(nUD_Righe.Text);
-
-                        f.Show();
-                        NordOvest(colonne, righe);
-
-                        creaTabella();
-                        ricrea(t);
-                        minimo();
-
-                        creaTabella();
-                        ricrea(t);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                Tabella.ReadOnly = false;
-        }
-        private void riempi()
-        {
-            int somma=0;
-            int random = 0;
-            bool big=false;
-            Random r = new Random();
-            if (Convert.ToInt32(nUP_max.Text) >=Convert.ToInt32( nUP_Min.Text))
-            {
-                big=true;
-            }
-            else
-            {
-                big=false;
-                primo = true;
-                MessageBox.Show("Intervallo dei costi non corretto", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
-            }
-            if (big)
-            {
-                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
-                {
-                    for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
-                    {
-                        //FARE TEST RIEMPI
-                        Tabella[i, j].Value = Convert.ToInt32(r.Next(Convert.ToInt32(nUP_Min.Text), Convert.ToInt32(nUP_max.Text)));
-                    }
-                }
-
-
-                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
-                {
-                    //Controllo sulla creazione della tabella quando si riempiono gli spazi
-                    random = Convert.ToInt32(r.Next(50, 200));
-                    Tabella[i, Convert.ToInt32(nUD_Righe.Text)].Value = random;
-                    somma = somma + random;
-                }
-                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text)].Value = somma;
-                int calcolo = 0;
-                int media = 0;
-                int diff = 0;
-                bool controllo = true;
-                if (Convert.ToInt32(nUD_Righe.Text) > 1)
-                {
-                    media = somma / (Convert.ToInt32(nUD_Righe.Text) - 1);
-
-                }
-                if (media < 10)
-                {
-                    media = 11;
-
-                }
-
-                for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text) - 1; j++)
-                {
-
-
-                    random = Convert.ToInt32(r.Next(media - ((media / 10) * 5), (media + diff)));
-                    ;
-                    if (controllo == true)
-                    {
-                        diff = media - random;
-                    }
-                    else
-                    {
-                        diff = 0;
-                    }
-                    controllo = !controllo;
-                    Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, j].Value = random;
-                    calcolo = calcolo + random;
-
-                }
-
-                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text) - 1].Value = somma - calcolo;
-
-                //creaTabella();
-
-                /* Tabella[1,0].Value = 10;
-                 Tabella[1,1].Value = 15;
-                 Tabella[1,2].Value = 20;
-                 Tabella[1,3].Value = 100;
-
-                 Tabella[2, 0].Value = 12;
-                 Tabella[2, 1].Value = 30;
-                 Tabella[2, 2].Value = 35;
-                 Tabella[2, 3].Value = 120;
-
-                 Tabella[3, 0].Value = 80;
-                 Tabella[3, 1].Value = 40;
-                 Tabella[3, 2].Value = 30;
-                 Tabella[3, 3].Value = 90;
-
-                 Tabella[4, 0].Value = 30;
-                 Tabella[4, 1].Value = 45;
-                 Tabella[4, 2].Value = 20;
-                 Tabella[4, 3].Value = 50;
-
-                 Tabella[5, 0].Value = 50;
-                 Tabella[5, 1].Value = 60;
-                 Tabella[5, 2].Value = 50;
-                 Tabella[5, 3].Value = 150;
-
-                 Tabella[6, 0].Value = 200;
-                 Tabella[6, 1].Value = 150;
-                 Tabella[6, 2].Value = 160;
-                 Tabella[6, 3].Value = 510;
-                */
-            }
-        }
-       
-        private void btn_Test_Click(object sender, EventArgs e)
-        {
-            //MODIFICAREEEEE
-            if (!crea)
-            {
-                MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                if (primo)
-                {
-                    if (crea == true)
-                    {
-                        riempi();
-                    }
-                    else
-                    {
-                        MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    primo = false;
-                }
-                else
-                {
-                    DialogResult dialogResult = MessageBox.Show("Proseguendo se sono presenti dei dati all'interno della tabella verranno cancellati \n Vuoi continuare?", "Avvertimento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-                    if (dialogResult == DialogResult.Yes)
-                    {
-                        riempi();
-                    }
-                }
-            }
-            
-        }
-
-        private void ricrea(int[,] t)
-        {
-            for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
-            {
-                for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
-                {
-                    Tabella[i, j].Value = t[i, j];
-                }
-            }
-
         }
         private void minimo()
         {
@@ -511,6 +278,93 @@ namespace Ricerca_Operativa
             }
             f.carica(-2, -2, costo);
         }
+
+       
+        private void riempi()
+        {
+            int somma=0;
+            int random = 0;
+            bool big=false;
+            Random r = new Random();
+            if (Convert.ToInt32(nUP_max.Text) >=Convert.ToInt32( nUP_Min.Text))
+            {
+                big=true;
+            }
+            else
+            {
+                big=false;
+                primo = true;
+                MessageBox.Show("Intervallo dei costi non corretto", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+            }
+            if (big)
+            {
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
+                {
+                    for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text); j++)
+                    {
+                        Tabella[i, j].Value = Convert.ToInt32(r.Next(Convert.ToInt32(nUP_Min.Text), Convert.ToInt32(nUP_max.Text)));
+                    }
+                }
+
+
+                for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text); i++)
+                {
+                    random = Convert.ToInt32(r.Next(50, 200));
+                    Tabella[i, Convert.ToInt32(nUD_Righe.Text)].Value = random;
+                    somma = somma + random;
+                }
+                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text)].Value = somma;
+                int calcolo = 0;
+                int media = 0;
+                int diff = 0;
+                bool controllo = true;
+                if (Convert.ToInt32(nUD_Righe.Text) > 1)
+                {
+                    media = somma / (Convert.ToInt32(nUD_Righe.Text) - 1);
+
+                }
+                if (media < 10)
+                {
+                    media = 11;
+
+                }
+
+                for (int j = 0; j < Convert.ToInt32(nUD_Righe.Text) - 1; j++)
+                {
+
+
+                    random = Convert.ToInt32(r.Next(media - ((media / 10) * 5), (media + diff)));
+                    ;
+                    if (controllo == true)
+                    {
+                        diff = media - random;
+                    }
+                    else
+                    {
+                        diff = 0;
+                    }
+                    controllo = !controllo;
+                    Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, j].Value = random;
+                    calcolo = calcolo + random;
+
+                }
+
+                Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text) - 1].Value = somma - calcolo;
+            }
+        }
+        private void ricrea(int[,] t)
+        {
+            for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
+            {
+                for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
+                {
+                    Tabella[i, j].Value = t[i, j];
+                }
+            }
+
+        }
+      
         private void Tabella_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
         {
             e.Control.KeyPress -= new KeyPressEventHandler(dgw_matrice_KeyPress);
@@ -526,6 +380,125 @@ namespace Ricerca_Operativa
             if (!char.IsControl(e.KeyChar) && !char.IsDigit(e.KeyChar))
             {
                 e.Handled = true;
+            }
+        }
+
+        //Buttons
+        private void Rj_CreaTabella_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (crea == true)
+                {
+                    DialogResult dialogResult = MessageBox.Show("Creando una nuova tabella i dati attuali verrano cancellati \n Vuoi continuare?", "Avvertimento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                    if (dialogResult == DialogResult.Yes)
+                    {
+                        creaTabella();
+                    }
+                }
+                else
+                {
+                    creaTabella();
+                    crea = true;
+
+                }
+                primo = true;
+                this.Tabella.DefaultCellStyle.Alignment = DataGridViewContentAlignment.MiddleRight;
+            }
+            catch
+            {
+                MessageBox.Show("Ops, Qualcosa è andato storto \n Riprova.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void Rj_Avvia_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                int r, c;
+
+                r = (Convert.ToInt32(nUD_Righe.Text) + 1);
+                c = (Convert.ToInt32(nUD_Colonne.Text) + 2);
+                int[,] t = new int[c, r];
+                if (crea)
+                {
+                    pieno();
+                    Max();
+                    somme();
+
+
+                    if (ok == true)
+                    {
+                        f.carica(-3, -3, -3);
+                        Tabella.ReadOnly = true;
+                        for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
+                        {
+                            for (int j = 0; j <= Convert.ToInt32(nUD_Righe.Text); j++)
+                            {
+                                t[i, j] = Convert.ToInt32(Tabella[i, j].Value);
+                            }
+                        }
+
+                        int colonne = Convert.ToInt32(nUD_Colonne.Text) + 1;
+                        int righe = Convert.ToInt32(nUD_Righe.Text);
+
+                        f.Show();
+                        NordOvest(colonne, righe);
+
+                        creaTabella();
+                        ricrea(t);
+                        minimo();
+
+                        creaTabella();
+                        ricrea(t);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                Tabella.ReadOnly = false;
+            }
+            catch
+            {
+                MessageBox.Show("Ops, Qualcosa è andato storto \n Riprova.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+           
+        }
+        private void rJ_Riempi_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (!crea)
+                {
+                    MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    if (primo)
+                    {
+                        if (crea == true)
+                        {
+                            riempi();
+                        }
+                        else
+                        {
+                            MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        }
+                        primo = false;
+                    }
+                    else
+                    {
+                        DialogResult dialogResult = MessageBox.Show("Proseguendo se sono presenti dei dati all'interno della tabella verranno cancellati \n Vuoi continuare?", "Avvertimento", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
+                        if (dialogResult == DialogResult.Yes)
+                        {
+                            riempi();
+                        }
+                    }
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Ops, Qualcosa è andato storto \n Riprova.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }
