@@ -34,7 +34,9 @@ namespace Ricerca_Operativa
             Tabella.AllowUserToAddRows = false;
             Tabella.AllowUserToOrderColumns = false;
             Tabella.AllowUserToResizeRows = false;
-            Tabella.AllowUserToResizeColumns = false;  
+            Tabella.AllowUserToResizeColumns = false;
+            Tabella.AllowUserToDeleteRows = false;
+            Tabella.AllowDrop = false;
         }
 
         private void creaTabella()
@@ -66,6 +68,7 @@ namespace Ricerca_Operativa
                 t.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
             nColonne = table.Columns.Count;
+            Tabella.Columns[0].ReadOnly = true;
         }
 
 
