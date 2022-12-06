@@ -7,14 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace Ricerca_Operativa
 {
     public partial class Form2 : Form
     {
+        Thread t;
         public Form2()
         {
             InitializeComponent();
+            CheckForIllegalCrossThreadCalls = false;
         }
 
         private void lsB_Costi_SelectedIndexChanged(object sender, EventArgs e)
@@ -30,36 +33,33 @@ namespace Ricerca_Operativa
             }
             else if (costo == -1)
             {
-                lsB_Costi.Items.Add("Totale: "+tot);
+                lsB_Costi.Items.Add("Totale: " + tot);
                 tot = 0;
                 lsB_Costi.Items.Add(" ");
                 lsB_Costi.Items.Add("MINIMI COSTI");
             }
-            else if(costo == -2)
+            else if (costo == -2)
             {
                 lsB_Costi.Items.Add("Totale: " + tot);
                 tot = 0;
-            }else
+            }
+            else
             {
                 int c = pezzi * CostoU;
                 tot = tot + c;
                 lsB_Costi.Items.Add(pezzi + " X " + CostoU + "" + " = " + c);
             }
-           
         }
-
-
 
         private void Form2_Load(object sender, EventArgs e)
         {
             lsB_Costi.Items.Add("NORD OVEST");
             this.ControlBox = false;
         }
-
-
         private void Rj_Chiudi_Click(object sender, EventArgs e)
         {
             this.Hide();
+
         }
     }
 }

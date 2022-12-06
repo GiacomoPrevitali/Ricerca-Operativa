@@ -15,7 +15,6 @@ namespace Ricerca_Operativa
     {
         DataTable table;
         bool ok = true;
-        int nColonne=0;
         bool crea = false;
         bool primo=false;
         int costo = 0;
@@ -41,10 +40,7 @@ namespace Ricerca_Operativa
 
         private void creaTabella()
         {
-
-            //ADATTARE LA TABLE GRID AL NUMERO DI COLONNE E ALLA DIMENSIONE DELLA FORM
-            //problema scrittura nelle righe datagrid view non risolto anche se lo pensi
-             table = new DataTable();
+            table = new DataTable();
             Tabella.DataSource = table;
 
             table.Columns.Add(" ");
@@ -67,16 +63,11 @@ namespace Ricerca_Operativa
             {
                 t.SortMode = DataGridViewColumnSortMode.NotSortable;
             }
-            nColonne = table.Columns.Count;
+
             Tabella.Columns[0].ReadOnly = true;
         }
 
-
-        //FARE TEST-------------------------------------------------------
-
-
-
-       public void pieno()
+        public void pieno()
         {
             int c = 0;
            
@@ -356,7 +347,7 @@ namespace Ricerca_Operativa
                 Tabella[Convert.ToInt32(nUD_Colonne.Text) + 1, Convert.ToInt32(nUD_Righe.Text) - 1].Value = somma - calcolo;
             }
         }
-        private void ricrea(int[,] t)
+        public void ricrea(int[,] t)
         {
             for (int i = 1; i <= Convert.ToInt32(nUD_Colonne.Text) + 1; i++)
             {
@@ -365,6 +356,7 @@ namespace Ricerca_Operativa
                     Tabella[i, j].Value = t[i, j];
                 }
             }
+            Tabella.Columns[0].ReadOnly = true;
 
         }
       
@@ -385,7 +377,6 @@ namespace Ricerca_Operativa
                 e.Handled = true;
             }
         }
-
         //Buttons
         private void Rj_CreaTabella_Click(object sender, EventArgs e)
         {
@@ -445,6 +436,7 @@ namespace Ricerca_Operativa
                         int righe = Convert.ToInt32(nUD_Righe.Text);
 
                         f.Show();
+
                         NordOvest(colonne, righe);
 
                         creaTabella();
@@ -453,19 +445,21 @@ namespace Ricerca_Operativa
 
                         creaTabella();
                         ricrea(t);
+                        Tabella.ReadOnly = false;
+                        Tabella.Columns[0].ReadOnly = true;
+
                     }
                 }
                 else
                 {
                     MessageBox.Show("Tabella inesistente", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                Tabella.ReadOnly = false;
+
             }
             catch
             {
                 MessageBox.Show("Ops, Qualcosa è andato storto \n Riprova.", "Errore", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-           
         }
         private void rJ_Riempi_Click(object sender, EventArgs e)
         {
